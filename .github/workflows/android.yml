@@ -92,10 +92,13 @@ jobs:
           checksum_path="$apk_path.sha256"
           test -f "$apk_path"
           test -f "$checksum_path"
-          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release upload "$GITHUB_REF_NAME" "$apk_path" "$checksum_path" --clobber
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "$apk_path" "$checksum_path" \
+              --repo "$GITHUB_REPOSITORY" \
+              --clobber
           else
             gh release create "$GITHUB_REF_NAME" "$apk_path" "$checksum_path" \
+              --repo "$GITHUB_REPOSITORY" \
               --title "GestureDot $GITHUB_REF_NAME" \
               --generate-notes \
               --prerelease
