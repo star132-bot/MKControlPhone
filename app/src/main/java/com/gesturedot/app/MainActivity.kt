@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -24,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,8 +62,15 @@ private fun GestureDotApp() {
     val context = LocalContext.current
     val preferences = remember { UserPreferences(context.applicationContext) }
     val bubbleEnabled by preferences.bubbleEnabled.collectAsStateWithLifecycle(initialValue = true)
+    val disclosureAccepted by preferences.hasAcceptedAccessibilityDisclosure
+        .collectAsStateWithLifecycle(initialValue = false)
     val scope = rememberCoroutineScope()
     var serviceEnabled by remember { mutableStateOf(isGestureServiceEnabled(context)) }
+    var showPermissionDisclosure by remember { mutableStateOf(false) }
+
+    fun openAccessibilitySettings() {
+        context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+    }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         serviceEnabled = isGestureServiceEnabled(context)
@@ -91,9 +100,15 @@ private fun GestureDotApp() {
             ServiceCard(
                 enabled = serviceEnabled,
                 onOpenSettings = {
-                    context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                    if (serviceEnabled || disclosureAccepted) {
+                        openAccessibilitySettings()
+                    } else {
+                        showPermissionDisclosure = true
+                    }
                 },
             )
+
+            PermissionSummaryCard()
 
             SettingCard(
                 title = "显示悬浮球",
@@ -115,6 +130,70 @@ private fun GestureDotApp() {
                 Text("录制新动作（下一阶段）")
             }
             Spacer(Modifier.height(24.dp))
+        }
+    }
+
+    if (showPermissionDisclosure) {
+        PermissionDisclosureDialog(
+            onDismiss = { showPermissionDisclosure = false },
+            onConfirm = {
+                showPermissionDisclosure = false
+                scope.launch {
+                    preferences.acceptAccessibilityDisclosure()
+                    openAccessibilitySettings()
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun PermissionDisclosureDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("启用手势服务") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("复刻球需要 Android 无障碍服务，才能在你点击悬浮球后执行已配置的点击和滑动。")
+                Text("服务会：")
+                Text("• 在其他 App 上方显示复刻球\n• 执行你主动触发的确定性手势\n• 检测服务是否已开启")
+                Text("服务不会：")
+                Text("• 读取页面文字、通知或密码\n• 截取或上传屏幕内容\n• 在你未触发时自行操作")
+                Text(
+                    "授权将在 Android 系统设置中完成，你可以随时关闭。",
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = onConfirm) {
+                Text("同意并前往设置")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("暂不启用")
+            }
+        },
+    )
+}
+
+@Composable
+private fun PermissionSummaryCard() {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("权限与隐私", style = MaterialTheme.typography.titleMedium)
+            Text("需要：手势服务", color = MaterialTheme.colorScheme.primary)
+            Text(
+                "不需要网络权限，也不额外申请普通悬浮窗权限。悬浮球由无障碍服务提供的安全覆盖层显示。",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

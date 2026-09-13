@@ -2,15 +2,16 @@
 
 一个以悬浮球主动触发录制手势的 Android 工具。当前版本完成了第一个工程闭环：启用无障碍服务后显示悬浮球，单击悬浮球执行默认向右滑动。
 
-[![一键下载 APK](https://img.shields.io/badge/Download-APK-6750A4?style=for-the-badge&logo=android)](https://github.com/star132-bot/MKControlPhone/releases/download/v0.1.0-alpha/GestureDot-v0.1.0-alpha-debug.apk)
+[![一键下载 APK](https://img.shields.io/badge/Download-APK-6750A4?style=for-the-badge&logo=android)](https://github.com/star132-bot/MKControlPhone/releases/download/v0.1.1-alpha/GestureDot-v0.1.1-alpha-debug.apk)
 
-> 当前版本：`v0.1.0-alpha`（Debug 测试版，Android 8.0 及以上）。如果按钮无法下载，请前往 [版本发布页面](https://github.com/star132-bot/MKControlPhone/releases/tag/v0.1.0-alpha)。安装后需要在系统无障碍设置中手动开启“复刻球手势服务”。
+> 当前版本：`v0.1.1-alpha`（Debug 测试版，Android 8.0 及以上）。如果按钮无法下载，请前往 [版本发布页面](https://github.com/star132-bot/MKControlPhone/releases/tag/v0.1.1-alpha)。安装后需要按照 App 内说明，在系统无障碍设置中手动开启“复刻球手势服务”。
 
 详细产品和技术定义见 [docs/SPEC.md](docs/SPEC.md)。
 
 ## 当前能力
 
 - Compose 设置首页与无障碍服务状态检查
+- 首次启用前的权限用途说明与明确同意流程
 - 无需 `SYSTEM_ALERT_WINDOW` 的 Accessibility Overlay 悬浮球
 - 悬浮球拖动与单击/双击/三击识别
 - 标准化坐标动作模型

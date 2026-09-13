@@ -14,14 +14,26 @@ class UserPreferences(private val context: Context) {
         preferences[BUBBLE_ENABLED] ?: true
     }
 
+    val hasAcceptedAccessibilityDisclosure: Flow<Boolean> =
+        context.gestureDotDataStore.data.map { preferences ->
+            preferences[ACCESSIBILITY_DISCLOSURE_ACCEPTED] ?: false
+        }
+
     suspend fun setBubbleEnabled(enabled: Boolean) {
         context.gestureDotDataStore.edit { preferences ->
             preferences[BUBBLE_ENABLED] = enabled
         }
     }
 
+    suspend fun acceptAccessibilityDisclosure() {
+        context.gestureDotDataStore.edit { preferences ->
+            preferences[ACCESSIBILITY_DISCLOSURE_ACCEPTED] = true
+        }
+    }
+
     private companion object {
         val BUBBLE_ENABLED = booleanPreferencesKey("bubble_enabled")
+        val ACCESSIBILITY_DISCLOSURE_ACCEPTED =
+            booleanPreferencesKey("accessibility_disclosure_accepted")
     }
 }
-
