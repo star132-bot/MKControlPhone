@@ -73,7 +73,7 @@
 - [x] 权限向导关键状态有自动化回归测试。
 - [x] README 一键下载地址已更新到目标版本。
 - [x] 本地 `testDebugUnitTest lintDebug assembleDebug` 全部通过。
-- [ ] GitHub Actions 的 main 构建全部通过。
+- [x] GitHub Actions 的 main 构建全部通过。
 - [ ] 安装包上传完成，下载地址与 SHA-256 可访问。
 - [ ] 至少一台 Android 8.0 以上真机完成首次授权、悬浮球拖动和单击滑动冒烟测试。
 
