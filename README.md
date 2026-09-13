@@ -2,16 +2,18 @@
 
 一个以悬浮球主动触发录制手势的 Android 工具。当前版本完成了第一个工程闭环：启用无障碍服务后显示悬浮球，单击悬浮球执行默认向右滑动。
 
-[![一键下载 APK](https://img.shields.io/badge/Download-APK-6750A4?style=for-the-badge&logo=android)](https://github.com/star132-bot/MKControlPhone/releases/download/v0.1.1-alpha/GestureDot-v0.1.1-alpha-debug.apk)
+[![一键下载 APK](https://img.shields.io/badge/Download-APK-6750A4?style=for-the-badge&logo=android)](https://github.com/star132-bot/MKControlPhone/releases/download/v0.1.2-alpha/GestureDot-v0.1.2-alpha-debug.apk)
+[![Android CI](https://github.com/star132-bot/MKControlPhone/actions/workflows/android.yml/badge.svg)](https://github.com/star132-bot/MKControlPhone/actions/workflows/android.yml)
 
-> 当前版本：`v0.1.1-alpha`（Debug 测试版，Android 8.0 及以上）。如果按钮无法下载，请前往 [版本发布页面](https://github.com/star132-bot/MKControlPhone/releases/tag/v0.1.1-alpha)。安装后需要按照 App 内说明，在系统无障碍设置中手动开启“复刻球手势服务”。
+> 当前版本：`v0.1.2-alpha`（Debug 测试版，Android 8.0 及以上）。如果按钮无法下载，请前往 [版本发布页面](https://github.com/star132-bot/MKControlPhone/releases/tag/v0.1.2-alpha)。首次打开会自动显示权限用途说明；同意后需在系统无障碍设置中手动开启“复刻球手势服务”。
 
 详细产品和技术定义见 [docs/SPEC.md](docs/SPEC.md)。
+权限、易用性验收与自动发布流程见 [docs/RELEASE_AND_UX.md](docs/RELEASE_AND_UX.md)。
 
 ## 当前能力
 
 - Compose 设置首页与无障碍服务状态检查
-- 首次启用前的权限用途说明与明确同意流程
+- 首次启动自动显示权限用途说明与明确同意流程
 - 无需 `SYSTEM_ALERT_WINDOW` 的 Accessibility Overlay 悬浮球
 - 悬浮球拖动与单击/双击/三击识别
 - 标准化坐标动作模型
@@ -27,7 +29,7 @@
 - Android SDK 37
 - Gradle 9.6（Wrapper）
 
-打开项目后等待 Gradle Sync，连接 Android 8.0 以上真机运行 `app`。首次启动点击“去启用”，在系统设置中开启“复刻球手势服务”。
+打开项目后等待 Gradle Sync，连接 Android 8.0 以上真机运行 `app`。首次启动会自动显示权限说明；点击“同意并前往设置”后，在系统设置中开启“复刻球手势服务”。
 
 ```bash
 ./gradlew testDebugUnitTest lintDebug assembleDebug

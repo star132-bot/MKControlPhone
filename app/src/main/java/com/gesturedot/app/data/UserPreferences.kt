@@ -19,6 +19,11 @@ class UserPreferences(private val context: Context) {
             preferences[ACCESSIBILITY_DISCLOSURE_ACCEPTED] ?: false
         }
 
+    val permissionOnboardingSeen: Flow<Boolean> =
+        context.gestureDotDataStore.data.map { preferences ->
+            preferences[PERMISSION_ONBOARDING_SEEN] ?: false
+        }
+
     suspend fun setBubbleEnabled(enabled: Boolean) {
         context.gestureDotDataStore.edit { preferences ->
             preferences[BUBBLE_ENABLED] = enabled
@@ -28,6 +33,13 @@ class UserPreferences(private val context: Context) {
     suspend fun acceptAccessibilityDisclosure() {
         context.gestureDotDataStore.edit { preferences ->
             preferences[ACCESSIBILITY_DISCLOSURE_ACCEPTED] = true
+            preferences[PERMISSION_ONBOARDING_SEEN] = true
+        }
+    }
+
+    suspend fun markPermissionOnboardingSeen() {
+        context.gestureDotDataStore.edit { preferences ->
+            preferences[PERMISSION_ONBOARDING_SEEN] = true
         }
     }
 
@@ -35,5 +47,6 @@ class UserPreferences(private val context: Context) {
         val BUBBLE_ENABLED = booleanPreferencesKey("bubble_enabled")
         val ACCESSIBILITY_DISCLOSURE_ACCEPTED =
             booleanPreferencesKey("accessibility_disclosure_accepted")
+        val PERMISSION_ONBOARDING_SEEN = booleanPreferencesKey("permission_onboarding_seen")
     }
 }

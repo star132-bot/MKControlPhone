@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.gesturedot.app.accessibility.GestureAccessibilityService
 import com.gesturedot.app.data.UserPreferences
+import com.gesturedot.app.data.shouldShowPermissionOnboarding
 import com.gesturedot.app.ui.theme.GestureDotTheme
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -64,6 +67,11 @@ private fun GestureDotApp() {
     val bubbleEnabled by preferences.bubbleEnabled.collectAsStateWithLifecycle(initialValue = true)
     val disclosureAccepted by preferences.hasAcceptedAccessibilityDisclosure
         .collectAsStateWithLifecycle(initialValue = false)
+    val onboardingSeenFlow = remember(preferences) {
+        preferences.permissionOnboardingSeen.map<Boolean, Boolean?> { it }
+    }
+    val onboardingSeen by onboardingSeenFlow
+        .collectAsStateWithLifecycle(initialValue = null)
     val scope = rememberCoroutineScope()
     var serviceEnabled by remember { mutableStateOf(isGestureServiceEnabled(context)) }
     var showPermissionDisclosure by remember { mutableStateOf(false) }
@@ -74,6 +82,12 @@ private fun GestureDotApp() {
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         serviceEnabled = isGestureServiceEnabled(context)
+    }
+
+    LaunchedEffect(onboardingSeen, serviceEnabled) {
+        if (shouldShowPermissionOnboarding(onboardingSeen, serviceEnabled)) {
+            showPermissionDisclosure = true
+        }
     }
 
     Scaffold(
@@ -135,7 +149,10 @@ private fun GestureDotApp() {
 
     if (showPermissionDisclosure) {
         PermissionDisclosureDialog(
-            onDismiss = { showPermissionDisclosure = false },
+            onDismiss = {
+                showPermissionDisclosure = false
+                scope.launch { preferences.markPermissionOnboardingSeen() }
+            },
             onConfirm = {
                 showPermissionDisclosure = false
                 scope.launch {
