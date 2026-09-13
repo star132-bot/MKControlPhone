@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.gesturedot.app"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.gesturedot.app"
         minSdk = 26
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 3
         versionName = "0.1.2-alpha"
 

@@ -34,10 +34,10 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Set up Android SDK 37
+      - name: Set up Android SDK 36
         uses: android-actions/setup-android@v4
         with:
-          packages: "platform-tools platforms;android-37 build-tools;36.0.0"
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
 
       - name: Verify project and build debug APK
         run: ./gradlew testDebugUnitTest lintDebug assembleDebug --no-daemon

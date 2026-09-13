@@ -26,7 +26,7 @@
 
 - Android Studio 2025.1.4 或更新稳定版
 - JDK 17
-- Android SDK 37
+- Android SDK 36
 - Gradle 9.6（Wrapper）
 
 打开项目后等待 Gradle Sync，连接 Android 8.0 以上真机运行 `app`。首次启动会自动显示权限说明；点击“同意并前往设置”后，在系统设置中开启“复刻球手势服务”。

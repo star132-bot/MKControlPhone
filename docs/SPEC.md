@@ -104,7 +104,7 @@
 - 冷启动到首页可交互：中端设备目标小于 1.5 秒。
 - 悬浮球点击到手势提交：目标小于 80 毫秒，不含多击判定窗口。
 - 服务被系统回收后，不损坏动作数据。
-- 支持 Android 8.0（API 26）到 Android 17；compileSdk/targetSdk 为 37。
+- 支持 Android 8.0（API 26）到 Android 16；compileSdk/targetSdk 为 36。
 - 支持简体中文；架构保留字符串国际化能力。
 - 无网络权限；第一版离线运行。
 
@@ -113,7 +113,7 @@
 | 层 | 选型 | 原因 |
 |---|---|---|
 | 语言 | Kotlin 2.3.21 | Android 主力语言、协程与密封模型适合动作引擎 |
-| 构建 | AGP 9.4.0、Gradle 9.6、JDK 17 | 当前稳定组合，支持 API 37 与内置 Kotlin |
+| 构建 | AGP 9.4.0、Gradle 9.6、JDK 17 | 可复现组合，支持公开稳定的 API 36 与内置 Kotlin |
 | UI | Jetpack Compose + Material 3 | 设置与编辑器状态驱动，便于后续时间轴 UI |
 | 状态 | ViewModel + StateFlow | 页面单向数据流；M1 暂无复杂 ViewModel |
 | 设置 | Preferences DataStore | 轻量、异步、适合悬浮球设置 |

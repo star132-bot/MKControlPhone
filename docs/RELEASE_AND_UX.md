@@ -15,6 +15,7 @@
 | 用户担心读取内容 | `canRetrieveWindowContent=false`，不申请网络权限，说明会做/不会做什么 | Lint、Manifest 和服务配置检查 |
 | 安装包难找 | README 顶部提供固定版本的一键下载按钮 | 发布后检查下载返回成功 |
 | 发布容易漏测或传错版本 | GitHub Actions 自动测试、Lint、构建，标签与 App 版本不一致时拒绝发布 | 推送 main 和版本标签各跑一次工作流 |
+| API 37 在公共 SDK 仓库不可复现 | compile/target 固定为公开稳定的 API 36，并使用最后兼容 API 36 的 Compose/Lifecycle 稳定版 | 本地与 GitHub runner 分别构建 |
 
 ## 2. 首次启动权限流程
 
