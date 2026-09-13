@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">复刻球</string>
+    <string name="accessibility_service_name">复刻球手势服务</string>
+    <string name="accessibility_service_description">在你主动点击悬浮球时执行已配置的点击或滑动手势。服务不读取页面文字，也不上传屏幕内容。</string>
+</resources>
+
